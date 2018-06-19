@@ -1,14 +1,18 @@
 package br.edu.iff.pooa.relp;
 
 import android.content.Intent;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,14 +41,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String login = this.mViewHolder.edtLogin.getText().toString();
             String senha = this.mViewHolder.edtSenha.getText().toString();
 
-            if (login.equals("admin") && senha.equals("admin")){
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+            if (login.equals("") || senha.equals("")) {
+                Toast.makeText(getApplicationContext(), "Login ou Senha em branco", Toast.LENGTH_SHORT).show();
+            } else {
+                if (login.equals("admin") && senha.equals("admin")) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
+                    this.mViewHolder.edtSenha.setText("");
+//                    this.mViewHolder.edtSenha.setInputType(InputType.TYPE_CLASS_TEXT); // VISUALIZAR A SENHA
+                }
             }
         }
 
         if (id == R.id.tvRegistrar){
             Toast.makeText(getApplicationContext(), "Você será redirecionado", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, CadastroUserActivity.class);
+            startActivity(intent);
         }
     }
 
