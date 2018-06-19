@@ -1,7 +1,11 @@
 package br.edu.iff.pooa.relp.model;
 
-public class Republica {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Republica extends RealmObject{
+
+    @PrimaryKey
     private int id;
     private String nome;
     private String rua, bairro, cidade;
