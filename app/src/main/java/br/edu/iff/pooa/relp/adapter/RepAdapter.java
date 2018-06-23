@@ -20,4 +20,6 @@ public class RepAdapter extends ArrayAdapter<Republica> {
         this.context = context;
         this.reps = rep;
     }
+
+
 }

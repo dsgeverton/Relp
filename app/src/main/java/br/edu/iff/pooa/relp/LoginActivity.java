@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+import br.edu.iff.pooa.relp.model.Usuario;
+import io.realm.Realm;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ViewHolder mViewHolder = new ViewHolder();
 
@@ -44,19 +47,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (login.equals("") || senha.equals("")) {
                 Toast.makeText(getApplicationContext(), "Login ou Senha em branco", Toast.LENGTH_SHORT).show();
             } else {
-                if (login.equals("admin") && senha.equals("admin")) {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                } else {
+                Realm realm = Realm.getDefaultInstance();
+                Usuario user = realm.where(Usuario.class).equalTo("login", login).findFirst();
+                if(user == null){
                     Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
-                    this.mViewHolder.edtSenha.setText("");
-//                    this.mViewHolder.edtSenha.setInputType(InputType.TYPE_CLASS_TEXT); // VISUALIZAR A SENHA
+                } else {
+                    if (login.equals(user.getLogin()) && senha.equals(user.getSenha())) {
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
+                        this.mViewHolder.edtSenha.setText("");
+    //                    this.mViewHolder.edtSenha.setInputType(InputType.TYPE_CLASS_TEXT); // VISUALIZAR A SENHA
+                    }
                 }
+
+                realm.close();
             }
         }
 
         if (id == R.id.tvRegistrar){
-            Toast.makeText(getApplicationContext(), "Você será redirecionado", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, CadastroUserActivity.class);
             startActivity(intent);
         }
