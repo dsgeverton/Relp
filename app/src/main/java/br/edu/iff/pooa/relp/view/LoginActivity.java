@@ -1,19 +1,15 @@
-package br.edu.iff.pooa.relp;
+package br.edu.iff.pooa.relp.view;
 
 import android.content.Intent;
-import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
+import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Usuario;
 import io.realm.Realm;
 

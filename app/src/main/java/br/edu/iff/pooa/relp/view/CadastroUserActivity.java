@@ -1,4 +1,4 @@
-package br.edu.iff.pooa.relp;
+package br.edu.iff.pooa.relp.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Usuario;
 import io.realm.Realm;
 import io.realm.RealmResults;
