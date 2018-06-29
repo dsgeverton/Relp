@@ -37,14 +37,11 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
                                        startActivity(intent);
                                    }
                                });
-
-        ArrayList<Republica> republicas = addRepublica();
-
     }
 
-    private ArrayList<Republica> addRepublica(){
+    private List<Republica> addRepublica(){
 
-        ArrayList<Republica> republicas = new ArrayList<>();
+        List<Republica> republicas = new ArrayList<>();
         Republica r = new Republica();
 
         r.setNome("República Teste");
@@ -65,10 +62,9 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
 
     protected void onResume() {
         super.onResume();
-        ArrayList<Republica> republicas = addRepublica();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_Republica);
 
-        recyclerView.setAdapter(new RepAdapter(this, republicas,this));
+        recyclerView.setAdapter(new RepAdapter(this, addRepublica(),this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
 

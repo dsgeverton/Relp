@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Republica;
@@ -21,11 +22,11 @@ import br.edu.iff.pooa.relp.model.Republica;
 public class RepAdapter extends RecyclerView.Adapter {
 
     private final Context context;
-    private final ArrayList<Republica> republicas;
+    private final List<Republica> republicas;
     private static ClickRecyclerViewListener clickRecyclerViewListener;
 
 
-    public RepAdapter(@NonNull Context context, ArrayList<Republica> reps, ClickRecyclerViewListener clickRecyclerViewListener) {
+    public RepAdapter(@NonNull Context context, List<Republica> reps, ClickRecyclerViewListener clickRecyclerViewListener) {
         this.clickRecyclerViewListener = clickRecyclerViewListener;
         this.context = context;
         this.republicas = reps;
