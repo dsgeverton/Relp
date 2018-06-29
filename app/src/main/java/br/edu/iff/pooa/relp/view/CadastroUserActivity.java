@@ -12,7 +12,8 @@ import br.edu.iff.pooa.relp.model.Usuario;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class CadastroUserActivity extends AppCompatActivity implements View.OnClickListener{
+public class
+CadastroUserActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ViewHolder mViewHolder = new ViewHolder();
 

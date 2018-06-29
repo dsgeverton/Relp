@@ -7,11 +7,28 @@ public class Republica extends RealmObject{
 
     @PrimaryKey
     private int id;
-    private String nome;
+    private String nome, administrador;
     private String rua, bairro, cidade;
     private int numero;
+    private boolean isEnable;
 
     public Republica() {}
+
+    public String getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(String administrador) {
+        this.administrador = administrador;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -62,9 +79,11 @@ public class Republica extends RealmObject{
         return numero;
     }
 
-    public Republica(int id, String nome, String rua, String bairro, String cidade, int numero) {
+    public Republica(int id, String nome, String rua, String bairro, String cidade, int numero, String administrador, boolean isEnable) {
 
         this.id = id;
+        this.administrador = administrador;
+        this.isEnable = isEnable;
         this.nome = nome;
         this.rua = rua;
         this.bairro = bairro;
