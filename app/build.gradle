@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 
-realm{
+realm {
     syncEnabled = true;
 }
 

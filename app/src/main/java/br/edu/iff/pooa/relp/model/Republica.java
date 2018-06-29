@@ -8,11 +8,32 @@ public class Republica extends RealmObject{
     @PrimaryKey
     private int id;
     private String nome, administrador;
-    private String rua, bairro, cidade;
+    private String rua, bairro, cidade, complemento;
     private int numero;
     private boolean isEnable;
 
     public Republica() {}
+
+    public Republica(int id, String nome, String rua, String bairro, String cidade, String complemento, int numero, String administrador, boolean isEnable) {
+
+        this.id = id;
+        this.administrador = administrador;
+        this.isEnable = isEnable;
+        this.nome = nome;
+        this.rua = rua;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.complemento = complemento;
+        this.numero = numero;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
 
     public String getAdministrador() {
         return administrador;
@@ -79,15 +100,4 @@ public class Republica extends RealmObject{
         return numero;
     }
 
-    public Republica(int id, String nome, String rua, String bairro, String cidade, int numero, String administrador, boolean isEnable) {
-
-        this.id = id;
-        this.administrador = administrador;
-        this.isEnable = isEnable;
-        this.nome = nome;
-        this.rua = rua;
-        this.bairro = bairro;
-        this.cidade = cidade;
-        this.numero = numero;
-    }
 }
