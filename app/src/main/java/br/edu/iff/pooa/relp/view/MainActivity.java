@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
     @Override
     public void onClick(Object object) {
         Republica republica = (Republica) object;
-        Intent intent = new Intent(MainActivity.this, CadastrarRepublicaActivity.class);
+        Intent intent = new Intent(MainActivity.this, GerenciadorActivity.class);
         intent.putExtra("id", republica.getId());
         startActivity(intent);
 

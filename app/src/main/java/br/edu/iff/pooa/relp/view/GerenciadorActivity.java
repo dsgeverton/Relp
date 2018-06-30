@@ -1,8 +1,11 @@
 package br.edu.iff.pooa.relp.view;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import br.edu.iff.pooa.relp.R;
+import br.edu.iff.pooa.relp.model.Republica;
+import io.realm.Realm;
 
 public class GerenciadorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ViewHolder mViewHolder = new ViewHolder();
+    private Realm realm;
+    private Republica republica;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +46,7 @@ public class GerenciadorActivity extends AppCompatActivity
             }
         });
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,6 +55,8 @@ public class GerenciadorActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -56,6 +73,19 @@ public class GerenciadorActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.gerenciador, menu);
+        // recuperar os dados da republica passada
+        realm = Realm.getDefaultInstance();
+        Intent intent = getIntent();
+        String id = (String) intent.getSerializableExtra("id");
+        this.mViewHolder.nomeRepublica = (TextView) findViewById(R.id.NomeRepublica);
+        this.mViewHolder.idRepublica = (TextView) findViewById(R.id.IdRepublica);
+        republica = realm.where(Republica.class).equalTo("id", id).findFirst();
+        realm.close();
+        if (republica != null){
+            mViewHolder.nomeRepublica.setText(republica.getNome());
+            mViewHolder.idRepublica.setText(republica.getId());
+        }
+
         return true;
     }
 
@@ -68,6 +98,22 @@ public class GerenciadorActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            new AlertDialog.Builder(this).setTitle("Deletar República").
+            setMessage("Tem certeza que deseja excluir esta república?").
+            setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    realm = Realm.getDefaultInstance();
+                    Intent intent = getIntent();
+                    String id = (String) intent.getSerializableExtra("id");
+                    republica = realm.where(Republica.class).equalTo("id", id).findFirst();
+                    realm.beginTransaction();
+                    republica.deleteFromRealm();
+                    realm.commitTransaction();
+                    realm.close();
+                    finish();
+                }
+            }).setNegativeButton("Não", null).show();
             return true;
         }
 
@@ -97,5 +143,9 @@ public class GerenciadorActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static class ViewHolder{
+        TextView nomeRepublica, idRepublica;
     }
 }
