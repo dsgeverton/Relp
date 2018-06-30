@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (id == R.id.buttonEntrar){
             String login = this.mViewHolder.edtLogin.getText().toString();
+            login = login.trim();
             String senha = this.mViewHolder.edtSenha.getText().toString();
 
             if (login.equals("") || senha.equals("")) {

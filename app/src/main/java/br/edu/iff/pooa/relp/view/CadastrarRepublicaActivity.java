@@ -1,5 +1,7 @@
 package br.edu.iff.pooa.relp.view;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import java.util.Random;
 
 import br.edu.iff.pooa.relp.R;
+import br.edu.iff.pooa.relp.SplashActivity;
 import br.edu.iff.pooa.relp.model.Republica;
 import io.realm.Realm;
 
@@ -32,7 +35,7 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
         this.mViewHolder.bairro = (EditText) findViewById(R.id.editTextBairro);
         this.mViewHolder.cadastrar = (Button) findViewById(R.id.buttonSalvarRepublica);
         this.mViewHolder.alert = findViewById(R.id.textViewAlert);
-
+        this.mViewHolder.alert.setVisibility(View.INVISIBLE);
         this.mViewHolder.cadastrar.setOnClickListener(this);
 
     }
@@ -55,7 +58,10 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
 
             Republica query = realm.where(Republica.class).equalTo("id", idRep).findFirst();
 
-            while (query != null){ idRep = getRandomHexString(); }
+            while (query != null) {
+                idRep = getRandomHexString();
+                query = realm.where(Republica.class).equalTo("id", idRep).findFirst();
+            }
 
             if ( nomeRepublica.equals("") || numero.equals("") || rua.equals("") || bairro.equals("") || cidade.equals("") || complemento.equals("") ) {
                 Toast.makeText(getApplicationContext(), "Existem campos em branco!", Toast.LENGTH_SHORT).show();
@@ -79,11 +85,9 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
                     finish();
                     realm.close();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Nome de república já existe!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Nome da república já existe!", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            mViewHolder.alert.setText(idRep);
 
             realm.close();
 

@@ -1,5 +1,12 @@
 package br.edu.iff.pooa.relp.view;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import br.edu.iff.pooa.relp.R;
+import br.edu.iff.pooa.relp.model.Republica;
 import br.edu.iff.pooa.relp.model.Usuario;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -31,6 +42,12 @@ CadastroUserActivity extends AppCompatActivity implements View.OnClickListener{
         this.mViewHolder.cadastrar = (Button) findViewById(R.id.buttonCadastrar);
 
         this.mViewHolder.cadastrar.setOnClickListener(this);
+
+        new AlertDialog.Builder(this).setTitle("Recomendações").
+                setMessage("Olá, para a sua segurança, recomendamos que sua senha possua:" +
+                        "   No mínimo 8 caracteres, caractere MAIÚSCULO, minúsculo e símbolos especiais '@#$'." +
+                        "   Até a próxima!").
+                setPositiveButton("Entendi!", null).show();
     }
 
     @Override
@@ -49,37 +66,81 @@ CadastroUserActivity extends AppCompatActivity implements View.OnClickListener{
             else {
                 if (!senha.equals(csenha)){
                     Toast.makeText(getApplicationContext(), "Senhas não coincidem", Toast.LENGTH_SHORT).show();
+                    mViewHolder.senha.setText("");
+                    mViewHolder.senha.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.border_edittext, null));
+                    mViewHolder.csenha.setText("");
+                    mViewHolder.csenha.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.border_edittext, null));
+
                 } else {
-                    Realm realm = Realm.getDefaultInstance();
-                    Usuario UsuarioCadastrado = realm.where(Usuario.class).equalTo("login", login).findFirst();
-                    if (UsuarioCadastrado == null){
-//                        Toast.makeText(getApplicationContext(), "Vazio!", Toast.LENGTH_SHORT).show();
-                        Number currentIdNum = realm.where(Usuario.class).max("id");
-                        int nextId;
-                        if(currentIdNum == null) {
-                            nextId = 1;
-                        } else {
-                            nextId = currentIdNum.intValue() + 1;
-                        }
-                        Usuario user = new Usuario();
-                        user.setId(nextId);
-                        user.setNome(nome);
-                        user.setSobrenome(sobrenome);
-                        user.setEmail(email);
-                        user.setLogin(login);
-                        user.setSenha(senha);
-                        realm.beginTransaction();
-                        realm.copyToRealm(user);
-                        realm.commitTransaction();
-                        Toast.makeText(getApplicationContext(), "Usuário cadastrado!", Toast.LENGTH_SHORT).show();
+                    if (senha.length() < 8 || !isPasswordValid(senha)){
+                        mViewHolder.senha.setText("");
+                        mViewHolder.csenha.setText("");
+                        mViewHolder.senha.setHint("Sua senha deve ter no mínimo 8 caracteres.");
+                        mViewHolder.senha.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.border_edittext, null));
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Usuário já existe!", Toast.LENGTH_SHORT).show();
+                        if (!isEmailValid(email)){
+                            mViewHolder.email.setText("");
+                            mViewHolder.email.setHint("Email inválido.");
+                            mViewHolder.email.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.border_edittext, null));
+                        } else {
+                            Realm realm = Realm.getDefaultInstance();
+                            Usuario UsuarioCadastrado = realm.where(Usuario.class).equalTo("login", login).findFirst();
+                            if (UsuarioCadastrado == null){
+                                Number currentIdNum = realm.where(Usuario.class).max("id");
+                                int nextId;
+                                if(currentIdNum == null) {
+                                    nextId = 1;
+                                } else {
+                                    nextId = currentIdNum.intValue() + 1;
+                                }
+                                Usuario user = new Usuario();
+                                user.setId(nextId);
+                                user.setNome(nome);
+                                user.setSobrenome(sobrenome);
+                                user.setEmail(email);
+                                user.setLogin(login);
+                                user.setSenha(senha);
+                                realm.beginTransaction();
+                                realm.copyToRealm(user);
+                                realm.commitTransaction();
+                                Toast.makeText(getApplicationContext(), "Usuário cadastrado!", Toast.LENGTH_SHORT).show();
+                                finish();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Usuário já existe!", Toast.LENGTH_SHORT).show();
+                            }
+                            realm.close();
+                        }
                     }
-                    realm.close();
                 }
             }
         }
+    }
+
+    private boolean isPasswordValid (String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+    }
+
+    private boolean isEmailValid (String email) {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String EMAIL_PATTERN = (".+@.+\\.[a-z]+");
+
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+
+        return matcher.matches();
     }
 
     public static class ViewHolder{
