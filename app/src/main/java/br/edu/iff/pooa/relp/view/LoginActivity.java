@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 Realm realm = Realm.getDefaultInstance();
                 Usuario user = realm.where(Usuario.class).equalTo("login", login).findFirst();
+
                 if(user == null){
                     Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
                 } else {

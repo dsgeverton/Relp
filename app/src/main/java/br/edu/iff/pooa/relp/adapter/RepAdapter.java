@@ -75,6 +75,14 @@ public class RepAdapter extends RecyclerView.Adapter {
             endereco = (TextView) itemView.findViewById(R.id.textViewEndereco);
             cidade = (TextView) itemView.findViewById(R.id.textViewCidade);
 
+
+            linearDetalhes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    clickRecyclerViewListener.onClick(republicas.get(getLayoutPosition()));
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

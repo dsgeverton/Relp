@@ -21,8 +21,11 @@ import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
 import br.edu.iff.pooa.relp.adapter.RepAdapter;
 import br.edu.iff.pooa.relp.model.Republica;
 import br.edu.iff.pooa.relp.view.DRepublica;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements ClickRecyclerViewListener{
+
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
 
     private List<Republica> addRepublica(){
 
+        realm = Realm.getDefaultInstance();
+
+        List<Republica> reps = realm.where(Republica.class).findAll();
+        if (reps != null){ return reps;}
+
         List<Republica> republicas = new ArrayList<>();
         Republica r = new Republica();
 
@@ -49,14 +57,18 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
         r.setNumero(55);
         r.setBairro("Centro");
         r.setCidade("Campos dos Goytacazes");
-        r.setId(1);
+        r.setId("#1");
         republicas.add(r);
-
+        realm.close();
         return republicas;
     }
 
     @Override
     public void onClick(Object object) {
+        Republica republica = (Republica) object;
+        Intent intent = new Intent(MainActivity.this, CadastrarRepublicaActivity.class);
+        intent.putExtra("id", republica.getId());
+        startActivity(intent);
 
     }
 

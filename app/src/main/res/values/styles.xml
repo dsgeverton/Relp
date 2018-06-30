@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/appSecondary</item>
     </style>
 
-    <style name="RelpTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="RelpTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/appPrimary</item>
         <item name="colorPrimaryDark">@color/appPrimaryDark</item>
         <item name="colorAccent">@color/appSecondaryDark</item>
@@ -18,5 +18,14 @@
     <style name="AppCompat.TelaCheia" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

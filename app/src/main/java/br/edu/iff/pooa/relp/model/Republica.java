@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey;
 public class Republica extends RealmObject{
 
     @PrimaryKey
-    private int id;
+    private String id;
     private String nome, administrador;
     private String rua, bairro, cidade, complemento;
     private int numero;
@@ -14,7 +14,7 @@ public class Republica extends RealmObject{
 
     public Republica() {}
 
-    public Republica(int id, String nome, String rua, String bairro, String cidade, String complemento, int numero, String administrador, boolean isEnable) {
+    public Republica(String id, String nome, String rua, String bairro, String cidade, String complemento, int numero, String administrador, boolean isEnable) {
 
         this.id = id;
         this.administrador = administrador;
@@ -51,7 +51,7 @@ public class Republica extends RealmObject{
         isEnable = enable;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,7 +75,7 @@ public class Republica extends RealmObject{
         this.numero = numero;
     }
 
-    public int getId() {
+    public String getId() {
 
         return id;
     }
