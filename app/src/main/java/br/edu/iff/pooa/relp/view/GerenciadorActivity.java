@@ -19,12 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.util.List;
 
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
-import br.edu.iff.pooa.relp.adapter.RepAdapter;
 import br.edu.iff.pooa.relp.adapter.StatusAdapter;
 import br.edu.iff.pooa.relp.model.Republica;
 import br.edu.iff.pooa.relp.util.SessionApplication;
@@ -36,7 +34,8 @@ public class GerenciadorActivity extends AppCompatActivity
     private ViewHolder mViewHolder = new ViewHolder();
     private Realm realm;
     private Republica republica;
-
+    private Intent intent;
+    private String idRepublica;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,12 @@ public class GerenciadorActivity extends AppCompatActivity
         setContentView(R.layout.activity_gerenciador);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        intent = getIntent();
+        idRepublica = (String) intent.getSerializableExtra("id");
+        realm = Realm.getDefaultInstance();
+        republica = realm.where(Republica.class).equalTo("id", idRepublica).findFirst();
+        realm.close();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +86,8 @@ public class GerenciadorActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.gerenciador, menu);
-        this.mViewHolder.nomeRepublica = (TextView) findViewById(R.id.NomeRepublica);
-        this.mViewHolder.idRepublica = (TextView) findViewById(R.id.IdRepublica);
+        this.mViewHolder.nomeRepublica = findViewById(R.id.NomeRepublica);
+        this.mViewHolder.idRepublica = findViewById(R.id.IdRepublica);
         this.mViewHolder.logo_rep = findViewById(R.id.LogoRepHeader);
 
         this.mViewHolder.logo_rep.setOnClickListener(new View.OnClickListener() {
@@ -93,11 +98,6 @@ public class GerenciadorActivity extends AppCompatActivity
         });
 
         // recuperar os dados da republica passada
-        realm = Realm.getDefaultInstance();
-        Intent intent = getIntent();
-        String id = (String) intent.getSerializableExtra("id");
-        republica = realm.where(Republica.class).equalTo("id", id).findFirst();
-        realm.close();
         if (republica != null){
             mViewHolder.nomeRepublica.setText(republica.getNome());
             mViewHolder.idRepublica.setText(republica.getId());
@@ -120,20 +120,19 @@ public class GerenciadorActivity extends AppCompatActivity
             setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    realm = Realm.getDefaultInstance();
-                    Intent intent = getIntent();
-                    String id = (String) intent.getSerializableExtra("id");
-                    republica = realm.where(Republica.class).equalTo("id", id).findFirst();
                     realm.beginTransaction();
                     republica.deleteFromRealm();
                     realm.commitTransaction();
-                    realm.close();
                     finish();
                 }
             }).setNegativeButton("Não", null).show();
             return true;
         }
-
+        if (id == R.id.action_editarRepublica) {
+            Intent alterscreen = new Intent(GerenciadorActivity.this, RepublicaDetalhesActivity.class);
+            alterscreen.putExtra("idRepublica", republica.getId());
+            startActivity(alterscreen);
+        }
         return super.onOptionsItemSelected(item);
     }
 

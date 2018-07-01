@@ -1,5 +1,8 @@
 package br.edu.iff.pooa.relp.model;
 
+import java.util.List;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -11,6 +14,8 @@ public class Republica extends RealmObject{
     private String rua, bairro, cidade, complemento;
     private int numero;
     private boolean isEnable;
+    private Despesas despesa;
+    private RealmList<MembroRepublica> membros;
 
     public Republica() {}
 
@@ -100,4 +105,19 @@ public class Republica extends RealmObject{
         return numero;
     }
 
+    public Despesas getDespesa() {
+        return despesa;
+    }
+
+    public void setDespesa(Despesas despesa) {
+        this.despesa = despesa;
+    }
+
+    public RealmList<MembroRepublica> getMembros() {
+        return membros;
+    }
+
+    public void setMembros(RealmList<MembroRepublica> membros) {
+        this.membros = membros;
+    }
 }

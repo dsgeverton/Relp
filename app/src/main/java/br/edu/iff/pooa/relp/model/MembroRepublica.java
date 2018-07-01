@@ -1,12 +1,13 @@
 package br.edu.iff.pooa.relp.model;
 
+
+import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 public class MembroRepublica extends RealmObject{
 
-    @PrimaryKey
     private int id;
+    private int idRepublica;
     private int cpf;
     private int idade;
     private String nome;
@@ -28,6 +29,14 @@ public class MembroRepublica extends RealmObject{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdRepublica() {
+        return idRepublica;
+    }
+
+    public void setIdRepublica(int idRepublica) {
+        this.idRepublica = idRepublica;
     }
 
     public int getCpf() {

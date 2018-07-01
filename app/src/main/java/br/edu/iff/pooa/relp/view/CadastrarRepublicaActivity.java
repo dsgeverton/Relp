@@ -1,7 +1,5 @@
 package br.edu.iff.pooa.relp.view;
 
-import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 import java.util.Random;
 
 import br.edu.iff.pooa.relp.R;
-import br.edu.iff.pooa.relp.SplashActivity;
 import br.edu.iff.pooa.relp.model.Republica;
 import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
