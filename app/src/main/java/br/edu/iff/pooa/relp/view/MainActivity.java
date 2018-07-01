@@ -48,17 +48,6 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
         List<Republica> reps = realm.where(Republica.class).equalTo("administrador", SESSION.getUserLogged()).findAll();
         if (reps != null){ return reps;}
 
-//        List<Republica> republicas = new ArrayList<>();
-//        Republica r = new Republica();
-//
-//        SessionApplication SESSION = (SessionApplication)getApplicationContext();
-//        r.setNome(SESSION.getUserLogged());
-//        r.setRua("Rua teste");
-//        r.setNumero(55);
-//        r.setBairro("Centro");
-//        r.setCidade("Campos dos Goytacazes");
-//        r.setId("#1");
-//        republicas.add(r);
         realm.close();
         return reps;
     }

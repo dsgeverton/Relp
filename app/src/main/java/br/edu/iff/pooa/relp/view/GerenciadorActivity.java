@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,12 +20,18 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import br.edu.iff.pooa.relp.R;
+import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
+import br.edu.iff.pooa.relp.adapter.RepAdapter;
+import br.edu.iff.pooa.relp.adapter.StatusAdapter;
 import br.edu.iff.pooa.relp.model.Republica;
+import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
 
 public class GerenciadorActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ClickRecyclerViewListener {
 
     private ViewHolder mViewHolder = new ViewHolder();
     private Realm realm;
@@ -152,6 +160,34 @@ public class GerenciadorActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void onResume() {
+        super.onResume();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_Status);
+
+        recyclerView.setAdapter(new StatusAdapter(this, addRepublica(),this));
+        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false);
+
+        recyclerView.setLayoutManager(layout);
+    }
+
+    private List<Republica> addRepublica(){
+
+        SessionApplication SESSION = (SessionApplication)getApplicationContext();
+        realm = Realm.getDefaultInstance();
+
+        List<Republica> reps = realm.where(Republica.class).equalTo("administrador", SESSION.getUserLogged()).findAll();
+        if (reps != null){ return reps;}
+
+        realm.close();
+        return reps;
+    }
+
+    @Override
+    public void onClick(Object object) {
+        Republica republica = (Republica) object;
     }
 
     public static class ViewHolder{
