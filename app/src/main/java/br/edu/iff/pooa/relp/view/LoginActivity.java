@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Usuario;
+import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
@@ -53,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (login.equals(user.getLogin()) && senha.equals(user.getSenha())) {
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
+                        SessionApplication SESSION = (SessionApplication)getApplicationContext();
+                        SESSION.setUserLogged(login);
                     } else {
                         Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
                         this.mViewHolder.edtSenha.setText("");

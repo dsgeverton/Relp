@@ -7,10 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
 import br.edu.iff.pooa.relp.adapter.RepAdapter;
 import br.edu.iff.pooa.relp.model.Republica;
-import br.edu.iff.pooa.relp.view.DRepublica;
+import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements ClickRecyclerViewListener{
@@ -40,27 +37,30 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
                                        startActivity(intent);
                                    }
                                });
+
     }
 
     private List<Republica> addRepublica(){
 
+        SessionApplication SESSION = (SessionApplication)getApplicationContext();
         realm = Realm.getDefaultInstance();
 
-        List<Republica> reps = realm.where(Republica.class).findAll();
+        List<Republica> reps = realm.where(Republica.class).equalTo("administrador", SESSION.getUserLogged()).findAll();
         if (reps != null){ return reps;}
 
-        List<Republica> republicas = new ArrayList<>();
-        Republica r = new Republica();
-
-        r.setNome("República Teste");
-        r.setRua("Rua teste");
-        r.setNumero(55);
-        r.setBairro("Centro");
-        r.setCidade("Campos dos Goytacazes");
-        r.setId("#1");
-        republicas.add(r);
+//        List<Republica> republicas = new ArrayList<>();
+//        Republica r = new Republica();
+//
+//        SessionApplication SESSION = (SessionApplication)getApplicationContext();
+//        r.setNome(SESSION.getUserLogged());
+//        r.setRua("Rua teste");
+//        r.setNumero(55);
+//        r.setBairro("Centro");
+//        r.setCidade("Campos dos Goytacazes");
+//        r.setId("#1");
+//        republicas.add(r);
         realm.close();
-        return republicas;
+        return reps;
     }
 
     @Override

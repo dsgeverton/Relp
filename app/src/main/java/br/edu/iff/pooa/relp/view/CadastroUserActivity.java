@@ -43,10 +43,13 @@ CadastroUserActivity extends AppCompatActivity implements View.OnClickListener{
 
         this.mViewHolder.cadastrar.setOnClickListener(this);
 
-        new AlertDialog.Builder(this).setTitle("Recomendações").
-                setMessage("Olá, para a sua segurança, recomendamos que sua senha possua:" +
-                        "   No mínimo 8 caracteres, caractere MAIÚSCULO, minúsculo e símbolos especiais '@#$'." +
-                        "   Até a próxima!").
+        new AlertDialog.Builder(this).setTitle("Recomendações❗").
+                setMessage("Olá, para a sua segurança, recomendamos que sua senha possua:\n" +
+                        "   - No mínimo 8 caracteres\n" +
+                        "   - Caractere MAIÚSCULO\n" +
+                        "   - Caractere Minúsculo\n" +
+                        "   - Símbolos especiais (Opcional)" +
+                        "   \n\n\nAté a próxima! \uD83D\uDE04").
                 setPositiveButton("Entendi!", null).show();
     }
 

@@ -15,8 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Republica;
@@ -73,12 +73,21 @@ public class GerenciadorActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.gerenciador, menu);
+        this.mViewHolder.nomeRepublica = (TextView) findViewById(R.id.NomeRepublica);
+        this.mViewHolder.idRepublica = (TextView) findViewById(R.id.IdRepublica);
+        this.mViewHolder.logo_rep = findViewById(R.id.LogoRepHeader);
+
+        this.mViewHolder.logo_rep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // recuperar os dados da republica passada
         realm = Realm.getDefaultInstance();
         Intent intent = getIntent();
         String id = (String) intent.getSerializableExtra("id");
-        this.mViewHolder.nomeRepublica = (TextView) findViewById(R.id.NomeRepublica);
-        this.mViewHolder.idRepublica = (TextView) findViewById(R.id.IdRepublica);
         republica = realm.where(Republica.class).equalTo("id", id).findFirst();
         realm.close();
         if (republica != null){
@@ -97,7 +106,7 @@ public class GerenciadorActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_excluir) {
             new AlertDialog.Builder(this).setTitle("Deletar República").
             setMessage("Tem certeza que deseja excluir esta república?").
             setPositiveButton("Sim", new DialogInterface.OnClickListener() {
@@ -147,5 +156,6 @@ public class GerenciadorActivity extends AppCompatActivity
 
     public static class ViewHolder{
         TextView nomeRepublica, idRepublica;
+        ImageView logo_rep;
     }
 }

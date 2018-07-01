@@ -15,6 +15,7 @@ import java.util.Random;
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.SplashActivity;
 import br.edu.iff.pooa.relp.model.Republica;
+import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
 
 public class CadastrarRepublicaActivity extends AppCompatActivity implements View.OnClickListener{
@@ -69,6 +70,7 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
             else {
                 query = realm.where(Republica.class).equalTo("nome", nomeRepublica).findFirst();
                 if (query == null) {
+                    SessionApplication SESSION = (SessionApplication)getApplicationContext();
                     Republica rep = new Republica();
                     rep.setId("#" + idRep);
                     rep.setNome(nomeRepublica);
@@ -76,6 +78,7 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
                     rep.setNumero(Integer.parseInt(numero));
                     rep.setBairro(bairro);
                     rep.setEnable(true);
+                    rep.setAdministrador(SESSION.getUserLogged());
                     rep.setCidade(cidade);
                     rep.setComplemento(complemento);
                     realm.beginTransaction();
