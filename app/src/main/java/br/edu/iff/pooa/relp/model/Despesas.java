@@ -1,10 +1,7 @@
 package br.edu.iff.pooa.relp.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -13,14 +10,14 @@ public class Despesas extends RealmObject {
 
     @PrimaryKey
     private int id;
-    private int idRepublica;
+    private String idRepublica;
     private float valorAluguel;
     private RealmList<Produto> listProdutos;
     private RealmList<Conta> contas;
     private Date dataVencimento;
 
     public Despesas(){}
-    public Despesas(int id, int idRepublica, float valorAluguel, Date dataVencimento){
+    public Despesas(int id, String idRepublica, float valorAluguel, Date dataVencimento){
         this.id = id;
         this.idRepublica = idRepublica;
         this.valorAluguel = valorAluguel;
@@ -37,11 +34,11 @@ public class Despesas extends RealmObject {
         this.id = id;
     }
 
-    public int getIdRepublica() {
+    public String getIdRepublica() {
         return idRepublica;
     }
 
-    public void setIdRepublica(int idRepublica) {
+    public void setIdRepublica(String idRepublica) {
         this.idRepublica = idRepublica;
     }
 

@@ -17,9 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.edu.iff.pooa.relp.R;
+import br.edu.iff.pooa.relp.model.Despesas;
 import br.edu.iff.pooa.relp.model.Republica;
 import io.realm.Realm;
 
@@ -45,7 +47,7 @@ public class GerenciadorActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Essa ação ainda não foi implementada!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -60,7 +62,13 @@ public class GerenciadorActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         this.mViewHolder.linearDespesas = (LinearLayout) findViewById(R.id.linearLayoutDespesas);
+        this.mViewHolder.linearMembros = (LinearLayout) findViewById(R.id.linearLayoutMembros);
+        this.mViewHolder.linearContas = (LinearLayout) findViewById(R.id.linearLayoutContas);
+        this.mViewHolder.linearProdutos = (LinearLayout) findViewById(R.id.linearLayoutProdutos);
         this.mViewHolder.valorDespesas = (TextView) findViewById(R.id.textViewValorDespesas);
+        this.mViewHolder.novoProduto = (TextView) findViewById(R.id.textViewNovoProduto);
+        this.mViewHolder.relativeAddAluguel = (RelativeLayout) findViewById(R.id.relativeValorAluguel);
+        this.mViewHolder.relativeNovoProduto = (RelativeLayout) findViewById(R.id.relativeNovoProduto);
 
     }
 
@@ -135,16 +143,25 @@ public class GerenciadorActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_addMembro) {
-            // Handle the camera action
+            mViewHolder.linearMembros.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            mViewHolder.linearMembros.requestLayout();
+            mViewHolder.linearMembros.setElevation(10);
         } else if (id == R.id.nav_aluguel) {
-            mViewHolder.linearDespesas.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            mViewHolder.linearDespesas.requestLayout();
-            mViewHolder.linearDespesas.setElevation(10);
+            Intent i = new Intent(getApplicationContext(), AddAluguelActivity.class);
+            i.putExtra("idRepublica", republica.getId());
+            startActivity(i);
+//            mViewHolder.linearDespesas.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+//            mViewHolder.linearDespesas.requestLayout();
+//            mViewHolder.linearDespesas.setElevation(10);
 
         } else if (id == R.id.nav_contas) {
-
+            mViewHolder.linearContas.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            mViewHolder.linearContas.requestLayout();
+            mViewHolder.linearContas.setElevation(10);
         } else if (id == R.id.nav_produtos) {
-
+            mViewHolder.linearProdutos.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            mViewHolder.linearProdutos.requestLayout();
+            mViewHolder.linearProdutos.setElevation(10);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -165,15 +182,49 @@ public class GerenciadorActivity extends AppCompatActivity
         republica = realm.where(Republica.class).equalTo("id", idRepublica).findFirst();
         realm.close();
 
-        if (republica.getDespesa() == null || republica.getDespesa().getValorAluguel() ==0){
+
+        this.mViewHolder.valorDespesas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), AddAluguelActivity.class);
+                startActivity(i);
+            }
+        });
+
+        realm = Realm.getDefaultInstance();
+        Despesas despesas = realm.where(Despesas.class).equalTo("idRepublica", republica.getId()).findFirst();
+        realm.close();
+
+        if (despesas == null){
 
             mViewHolder.linearDespesas.getLayoutParams().height = 1;
             mViewHolder.linearDespesas.requestLayout();
             mViewHolder.linearDespesas.setElevation(0);
+            mViewHolder.valorDespesas.setClickable(false);
+        } else{
+            mViewHolder.valorDespesas.setText(String.format("R$ %.2f",despesas.getValorAluguel()));
         }
 
+        if (republica.getMembros().isEmpty()){
 
+            mViewHolder.linearMembros.getLayoutParams().height = 1;
+            mViewHolder.linearMembros.requestLayout();
+            mViewHolder.linearMembros.setElevation(0);
+        }
 
+        if (republica.getDespesa() == null){
+
+            mViewHolder.linearContas.getLayoutParams().height = 1;
+            mViewHolder.linearContas.requestLayout();
+            mViewHolder.linearContas.setElevation(0);
+        }
+
+        if (republica.getDespesa() == null){
+
+            mViewHolder.linearProdutos.getLayoutParams().height = 1;
+            mViewHolder.linearProdutos.requestLayout();
+            mViewHolder.linearProdutos.setElevation(0);
+        }
     }
 
 //    @Override
@@ -184,9 +235,10 @@ public class GerenciadorActivity extends AppCompatActivity
     public static class ViewHolder{
         TextView nomeRepublica, idRepublica;
         ImageView logo_rep;
-        LinearLayout linearDespesas;
+        LinearLayout linearDespesas, linearMembros, linearContas, linearProdutos;
+        RelativeLayout relativeAddAluguel, relativeNovoProduto;
 
-        TextView valorDespesas;
+        TextView valorDespesas, novoProduto;
 
     }
 }
