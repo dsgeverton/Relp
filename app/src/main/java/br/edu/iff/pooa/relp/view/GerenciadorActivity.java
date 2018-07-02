@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,18 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.util.List;
 
 import br.edu.iff.pooa.relp.R;
-import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
-import br.edu.iff.pooa.relp.adapter.StatusAdapter;
 import br.edu.iff.pooa.relp.model.Republica;
-import br.edu.iff.pooa.relp.util.SessionApplication;
 import io.realm.Realm;
 
 public class GerenciadorActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ClickRecyclerViewListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewHolder mViewHolder = new ViewHolder();
     private Realm realm;
@@ -44,11 +39,7 @@ public class GerenciadorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        intent = getIntent();
-        idRepublica = (String) intent.getSerializableExtra("id");
-        realm = Realm.getDefaultInstance();
-        republica = realm.where(Republica.class).equalTo("id", idRepublica).findFirst();
-        realm.close();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +59,8 @@ public class GerenciadorActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        this.mViewHolder.linearDespesas = (LinearLayout) findViewById(R.id.linearLayoutDespesas);
+        this.mViewHolder.valorDespesas = (TextView) findViewById(R.id.textViewValorDespesas);
 
     }
 
@@ -142,13 +134,16 @@ public class GerenciadorActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_addMembro) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_aluguel) {
+            mViewHolder.linearDespesas.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            mViewHolder.linearDespesas.requestLayout();
+            mViewHolder.linearDespesas.setElevation(10);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_contas) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_produtos) {
 
         } else if (id == R.id.nav_share) {
 
@@ -163,34 +158,35 @@ public class GerenciadorActivity extends AppCompatActivity
 
     protected void onResume() {
         super.onResume();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_Status);
 
-        recyclerView.setAdapter(new StatusAdapter(this, addRepublica(),this));
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-
-        recyclerView.setLayoutManager(layout);
-    }
-
-    private List<Republica> addRepublica(){
-
-        SessionApplication SESSION = (SessionApplication)getApplicationContext();
+        intent = getIntent();
+        idRepublica = (String) intent.getSerializableExtra("id");
         realm = Realm.getDefaultInstance();
-
-        List<Republica> reps = realm.where(Republica.class).equalTo("administrador", SESSION.getUserLogged()).findAll();
-        if (reps != null){ return reps;}
-
+        republica = realm.where(Republica.class).equalTo("id", idRepublica).findFirst();
         realm.close();
-        return reps;
+
+        if (republica.getDespesa() == null || republica.getDespesa().getValorAluguel() ==0){
+
+            mViewHolder.linearDespesas.getLayoutParams().height = 1;
+            mViewHolder.linearDespesas.requestLayout();
+            mViewHolder.linearDespesas.setElevation(0);
+        }
+
+
+
     }
 
-    @Override
-    public void onClick(Object object) {
-        Republica republica = (Republica) object;
-    }
+//    @Override
+//    public void onClick(Object object) {
+//        Republica republica = (Republica) object;
+//    }
 
     public static class ViewHolder{
         TextView nomeRepublica, idRepublica;
         ImageView logo_rep;
+        LinearLayout linearDespesas;
+
+        TextView valorDespesas;
+
     }
 }

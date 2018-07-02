@@ -7,10 +7,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewStatusAluguel"
+        android:id="@+id/base"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:elevation="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:textAlignment="center"
@@ -20,6 +21,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/linearLayoutDespesas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:elevation="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_linearlayout"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/base">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESPESAS"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="25sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ffffff"
+            android:focusable="false" />
+
+        <TextView
+            android:id="@+id/textViewValorDespesas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="ADICIONAR ALUGUEL"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
@@ -27,20 +67,9 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewStatusAluguel"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutDespesas"
         app:srcCompat="@mipmap/ic_logo" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_Status"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 </android.support.constraint.ConstraintLayout>

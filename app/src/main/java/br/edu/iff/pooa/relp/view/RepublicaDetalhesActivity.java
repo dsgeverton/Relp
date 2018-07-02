@@ -82,8 +82,6 @@ public class RepublicaDetalhesActivity extends AppCompatActivity implements View
 
     private void atualizar() {
 
-        mViewHolder.alert.setText(republica.getId());
-
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         republica.setNome(mViewHolder.nomeRepublica.getText().toString());

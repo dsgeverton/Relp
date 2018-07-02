@@ -31,7 +31,14 @@
         <activity
             android:name=".view.GerenciadorActivity"
             android:label="@string/title_activity_gerenciador"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.RepublicaDetalhesActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
+        <activity android:name=".view.AddAluguelActivity"></activity>
     </application>
 
 </manifest>
