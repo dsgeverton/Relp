@@ -37,4 +37,5 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'io.realm:android-adapters:3.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
 }
