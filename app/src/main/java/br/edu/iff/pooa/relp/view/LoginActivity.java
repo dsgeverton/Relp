@@ -3,10 +3,12 @@ package br.edu.iff.pooa.relp.view;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
@@ -28,19 +31,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "TESTE";
     private static final int RC_SIGN_IN = 9001;
+    private boolean passwdVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        this.mViewHolder.btnEntrar = (Button) findViewById(R.id.buttonEntrar);
-        this.mViewHolder.edtSenha = (EditText) findViewById(R.id.edtSenha);
-        this.mViewHolder.edtLogin = (EditText) findViewById(R.id.edtLogin);
-        this.mViewHolder.tvRegistrar = (TextView) findViewById(R.id.tvRegistrar);
+        this.mViewHolder.btnEntrar = findViewById(R.id.buttonEntrar);
+        this.mViewHolder.edtSenha = findViewById(R.id.edtSenha);
+        this.mViewHolder.edtLogin = findViewById(R.id.edtLogin);
+        this.mViewHolder.tvRegistrar = findViewById(R.id.tvRegistrar);
+        this.mViewHolder.sign_in = findViewById(R.id.sign_in_button);
+        this.mViewHolder.verSenha = findViewById(R.id.verSenha);
 
+        this.mViewHolder.verSenha.setOnClickListener(this);
+        this.mViewHolder.sign_in.setOnClickListener(this);
         this.mViewHolder.btnEntrar.setOnClickListener(this);
         this.mViewHolder.tvRegistrar.setOnClickListener(this);
+
+        passwdVisible = false;
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -49,13 +59,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         updateUI(account);
-
     }
 
     private void updateUI(GoogleSignInAccount account) {
 
         if (account != null){
-            Toast.makeText(this, "Existe um usuário logado", Toast.LENGTH_SHORT).show();
             Log.i("GOOGLE SIGN IN ID:", account.getId());
             Log.i("GOOGLE SIGN IN NAME:", account.getDisplayName());
             Log.i("GOOGLE SIGN IN EMAIL:", account.getEmail());
@@ -93,11 +101,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else {
                         Toast.makeText(getApplicationContext(), "Login os Senha incorretos", Toast.LENGTH_SHORT).show();
                         this.mViewHolder.edtSenha.setText("");
-    //                    this.mViewHolder.edtSenha.setInputType(InputType.TYPE_CLASS_TEXT); // VISUALIZAR A SENHA
                     }
                 }
 
                 realm.close();
+            }
+        }
+
+        if (id == R.id.verSenha){
+            if (passwdVisible) {
+                this.mViewHolder.edtSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD); // VISUALIZAR A SENHA
+                this.mViewHolder.verSenha.setImageResource(R.drawable.ic_eye_on);
+                passwdVisible = false;
+            } else {
+                this.mViewHolder.edtSenha.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); // OCULTAR A SENHA
+                this.mViewHolder.verSenha.setImageResource(R.drawable.ic_eye_off);
+                passwdVisible = true;
             }
         }
 
@@ -147,5 +166,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button btnEntrar;
         EditText edtLogin, edtSenha;
         TextView tvRegistrar;
+        SignInButton sign_in;
+        ImageView verSenha;
     }
 }
