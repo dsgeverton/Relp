@@ -1,15 +1,15 @@
 package br.edu.iff.pooa.relp.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import java.util.Random;
-
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.model.Republica;
 import br.edu.iff.pooa.relp.util.SessionApplication;
@@ -18,20 +18,19 @@ import io.realm.Realm;
 public class CadastrarRepublicaActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ViewHolder mViewHolder = new ViewHolder();
-    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrar_republica);
 
-        this.mViewHolder.nomeRepublica = (EditText) findViewById(R.id.editTextNomeRepublica);
-        this.mViewHolder.rua = (EditText) findViewById(R.id.editTextRua);
-        this.mViewHolder.complemento = (EditText) findViewById(R.id.editTextComplemento);
-        this.mViewHolder.cidade = (EditText) findViewById(R.id.editTextCidade);
-        this.mViewHolder.numero = (EditText) findViewById(R.id.editTextNumero);
-        this.mViewHolder.bairro = (EditText) findViewById(R.id.editTextBairro);
-        this.mViewHolder.cadastrar = (Button) findViewById(R.id.buttonSalvarRepublica);
+        this.mViewHolder.nomeRepublica = findViewById(R.id.editTextNomeRepublica);
+        this.mViewHolder.rua = findViewById(R.id.editTextRua);
+        this.mViewHolder.complemento = findViewById(R.id.editTextComplemento);
+        this.mViewHolder.cidade = findViewById(R.id.editTextCidade);
+        this.mViewHolder.numero = findViewById(R.id.editTextNumero);
+        this.mViewHolder.bairro = findViewById(R.id.editTextBairro);
+        this.mViewHolder.cadastrar = findViewById(R.id.buttonSalvarRepublica);
         this.mViewHolder.alert = findViewById(R.id.textViewAlert);
         this.mViewHolder.alert.setVisibility(View.INVISIBLE);
         this.mViewHolder.cadastrar.setOnClickListener(this);
@@ -52,7 +51,7 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
 
             String idRep = getRandomHexString();
 
-            realm = Realm.getDefaultInstance();
+            Realm realm = Realm.getDefaultInstance();
 
             Republica query = realm.where(Republica.class).equalTo("id", idRep).findFirst();
 
@@ -75,7 +74,12 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
                     rep.setNumero(Integer.parseInt(numero));
                     rep.setBairro(bairro);
                     rep.setEnable(true);
-                    rep.setAdministrador(SESSION.getUserLogged());
+                    // verificar se está com usuário do Google
+                    GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+                    if (account != null)
+                        rep.setAdministrador(account.getId());
+                    else
+                        rep.setAdministrador(SESSION.getUserLogged());
                     rep.setCidade(cidade);
                     rep.setComplemento(complemento);
                     realm.beginTransaction();
@@ -103,7 +107,7 @@ public class CadastrarRepublicaActivity extends AppCompatActivity implements Vie
     public String getRandomHexString(){
         int numchars = 6;
         Random r = new Random();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while(sb.length() < numchars){
             sb.append(Integer.toHexString(r.nextInt()));
         }

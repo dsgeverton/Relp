@@ -11,4 +11,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Excluir República</string>
+    <string name="registrar">Registrar</string>
+    <string name="logo_do_aplicativo">Logo do Aplicativo</string>
 </resources>
