@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.edu.iff.pooa.relp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".util.SessionApplication"
         android:allowBackup="true"
@@ -38,7 +40,7 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <activity android:name=".view.AddAluguelActivity"></activity>
+        <activity android:name=".view.AddAluguelActivity"/>
     </application>
 
 </manifest>
