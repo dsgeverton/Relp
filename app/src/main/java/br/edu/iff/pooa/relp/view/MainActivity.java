@@ -1,18 +1,25 @@
 package br.edu.iff.pooa.relp.view;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
-import java.util.ArrayList;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import java.util.List;
-
 import br.edu.iff.pooa.relp.R;
 import br.edu.iff.pooa.relp.adapter.ClickRecyclerViewListener;
 import br.edu.iff.pooa.relp.adapter.RepAdapter;
@@ -23,13 +30,17 @@ import io.realm.Realm;
 public class MainActivity extends AppCompatActivity implements ClickRecyclerViewListener{
 
     private Realm realm;
+    private GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInAccount mGoogleSignInAccount;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        LinearLayout botaoSair = findViewById(R.id.sairButton);
+
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View v) {
@@ -38,7 +49,36 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
                                    }
                                });
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (mGoogleSignInAccount == null){
+            botaoSair.setVisibility(View.INVISIBLE);
+            botaoSair.setClickable(false);
+        } else {
+            botaoSair.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("teste----------", "TESTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                    signOut();
+                }
+            });
+        }
     }
+
+    private void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        finish();
+                    }
+                });
+    }
+
 
     private List<Republica> addRepublica(){
 
@@ -63,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements ClickRecyclerView
 
     protected void onResume() {
         super.onResume();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_Republica);
+        RecyclerView recyclerView = findViewById(R.id.rv_Republica);
 
         recyclerView.setAdapter(new RepAdapter(this, addRepublica(),this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(this,

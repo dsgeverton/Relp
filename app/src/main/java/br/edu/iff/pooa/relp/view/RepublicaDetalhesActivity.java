@@ -32,16 +32,16 @@ public class RepublicaDetalhesActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_republica_detalhes);
 
-        this.mViewHolder.nomeRepublica = (EditText) findViewById(R.id.editTextNomeRepublicaEdit);
-        this.mViewHolder.rua = (EditText) findViewById(R.id.editTextRuaEdit);
-        this.mViewHolder.complemento = (EditText) findViewById(R.id.editTextComplementoEdit);
-        this.mViewHolder.cidade = (EditText) findViewById(R.id.editTextCidadeEdit);
-        this.mViewHolder.numero = (EditText) findViewById(R.id.editTextNumeroEdit);
-        this.mViewHolder.bairro = (EditText) findViewById(R.id.editTextBairroEdit);
-        this.mViewHolder.cadastrar = (Button) findViewById(R.id.buttonEditarRepublica);
-        this.mViewHolder.id = (TextView) findViewById(R.id.detalhesID);
-        this.mViewHolder.alert = (TextView) findViewById(R.id.textViewAlertEdit);
-        this.mViewHolder.habilitarEdicao = (Switch) findViewById(R.id.switchHabilitarEdicao);
+        this.mViewHolder.nomeRepublica = findViewById(R.id.editTextNomeRepublicaEdit);
+        this.mViewHolder.rua = findViewById(R.id.editTextRuaEdit);
+        this.mViewHolder.complemento = findViewById(R.id.editTextComplementoEdit);
+        this.mViewHolder.cidade = findViewById(R.id.editTextCidadeEdit);
+        this.mViewHolder.numero = findViewById(R.id.editTextNumeroEdit);
+        this.mViewHolder.bairro = findViewById(R.id.editTextBairroEdit);
+        this.mViewHolder.cadastrar = findViewById(R.id.buttonEditarRepublica);
+        this.mViewHolder.id = findViewById(R.id.detalhesID);
+        this.mViewHolder.alert = findViewById(R.id.textViewAlertEdit);
+        this.mViewHolder.habilitarEdicao = findViewById(R.id.switchHabilitarEdicao);
 
         this.mViewHolder.alert.setVisibility(View.VISIBLE);
         this.mViewHolder.cadastrar.setOnClickListener(this);

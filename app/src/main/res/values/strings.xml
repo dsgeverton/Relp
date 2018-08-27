@@ -13,4 +13,13 @@
     <string name="action_settings">Excluir República</string>
     <string name="registrar">Registrar</string>
     <string name="logo_do_aplicativo">Logo do Aplicativo</string>
+    <string name="complemento">Complemento</string>
+    <string name="salvar">Salvar</string>
+    <string name="bairro">Bairro</string>
+    <string name="cidade">Cidade</string>
+    <string name="n">Nº</string>
+    <string name="rua">Rua</string>
+    <string name="nome_da_republica">Nome da República</string>
+    <string name="localizar">Localizar</string>
+    <string name="cep">CEP</string>
 </resources>
