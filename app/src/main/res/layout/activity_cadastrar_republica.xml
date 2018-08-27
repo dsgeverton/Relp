@@ -32,7 +32,7 @@
         android:hint="Rua"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNomeRepublica" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCEP" />
 
     <EditText
         android:id="@+id/editTextNumero"
@@ -45,9 +45,8 @@
         android:hint="N°"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/editTextRua"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNomeRepublica" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCEP" />
 
     <EditText
         android:id="@+id/editTextCidade"
@@ -116,5 +115,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCidade" />
+
+    <EditText
+        android:id="@+id/editTextCEP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="CEP"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNomeRepublica" />
+
+    <Button
+        android:id="@+id/buttonLocalizarCEP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="LOCALIZAR"
+        app:layout_constraintStart_toEndOf="@+id/editTextCEP"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNomeRepublica" />
 
 </android.support.constraint.ConstraintLayout>
